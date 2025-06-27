@@ -13,12 +13,12 @@
     in
     {
       devShells.${system}.default = pkgs.mkShell {
-
-        BUILD_USE_NIX = "ON";
+        
         name = "sdl-dev-shell";
         shellHook = ''
           echo "Welcome to the SDL development environment!"
           echo "You can start developing your SDL applications now."
+          export PS1="\[\e[91m\]nix develop:\[\e[0m\] $PS1"
         '';
         packages = with pkgs; [
           # Build tools
@@ -28,33 +28,7 @@
           clang
           gnumake
           ninja
-
-          # SDL dependencies
-          xorg.libX11
-          xorg.libXcursor
-          xorg.libXext
-          xorg.libXfixes
-          xorg.libXi
-          xorg.libXrandr
           sdl3
-
-          alsa-lib
-          dbus
-          fcitx5
-          libdecor
-          libdrm
-          libjack2
-          libpulseaudio
-          mesa # libgbm
-          nas # libaudo
-          pipewire
-          sndio
-          systemdLibs # libudev
-
-          # SDL_VIDEODRIVER=wayland
-          wayland
-          libGL
-          libffi
         ];
       };
     };
