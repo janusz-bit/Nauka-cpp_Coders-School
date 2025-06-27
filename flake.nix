@@ -5,33 +5,56 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs =
+    { self, nixpkgs }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
       devShells.${system}.default = pkgs.mkShell {
+
+        BUILD_USE_NIX = "ON";
+        name = "sdl-dev-shell";
+        shellHook = ''
+          echo "Welcome to the SDL development environment!"
+          echo "You can start developing your SDL applications now."
+        '';
         packages = with pkgs; [
           # Build tools
           cmake
           pkg-config
           gcc
+          clang
+          gnumake
+          ninja
 
-          # SDL dependencies for windowing
-          wayland
-          libxkbcommon
+          # SDL dependencies
           xorg.libX11
           xorg.libXcursor
-          xorg.libXrandr
-          xorg.libXinerama
+          xorg.libXext
+          xorg.libXfixes
           xorg.libXi
-          xorg.libXScrnSaver
+          xorg.libXrandr
+          sdl3
 
-          # Other common SDL dependencies
           alsa-lib
+          dbus
+          fcitx5
+          libdecor
+          libdrm
+          libjack2
           libpulseaudio
-          udev
+          mesa # libgbm
+          nas # libaudo
+          pipewire
+          sndio
+          systemdLibs # libudev
+
+          # SDL_VIDEODRIVER=wayland
+          wayland
+          libGL
+          libffi
         ];
       };
     };
