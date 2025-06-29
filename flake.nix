@@ -13,7 +13,7 @@
     in
     {
       devShells.${system}.default = pkgs.mkShell {
-        
+
         name = "sdl-dev-shell";
         shellHook = ''
           echo "Welcome to the SDL development environment!"
@@ -28,7 +28,32 @@
           clang
           gnumake
           ninja
-          sdl3
+          # sdl3
+
+          alsa-lib
+          apple-sdk_11
+          cmake
+          dbus
+          ibusMinimal
+          libGL
+          libayatana-appindicator
+          libdecor
+          libdrm
+          libjack2
+          libpulseaudio
+          libusb1
+          libxkbcommon
+          libgbm
+          ninja
+          pipewire
+          sndio
+          systemdLibs
+          vulkan-headers
+          vulkan-loader
+          wayland
+          wayland-scanner
+          zenity
+
         ];
       };
     };
