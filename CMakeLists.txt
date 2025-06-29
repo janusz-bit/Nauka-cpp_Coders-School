@@ -20,7 +20,6 @@ set_target_properties(MarkdownReader PROPERTIES
 )
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 
-find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-static)
-# add_subdirectory(SDL)
+find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared)
 
 target_link_libraries(MarkdownReader PUBLIC SDL3::SDL3)
