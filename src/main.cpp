@@ -1,27 +1,18 @@
 #include <iostream>
 #include <memory>
 
-// TODO: Implement foo()
-// It should take shared_ptr to int and assign value 20 to the pointed int.
-// It should also display the value of this int and the number of how many pointers are pointing to it - use `use_count()`.
-// Display the same information in main() before and after calling foo()
-
-void foo(std::shared_ptr<int> ptr){
-    *ptr=20;
-    std::cout<<"*ptr: "<<*ptr<<'\n';
-    std::cout<<"ptr.use_count(): "<<ptr.use_count()<<'\n';
-    
-};
+// TODO: Implement calculateProduct()
+// It should take 2 int values and return their product as a shared_ptr.
+// Additionally, check how many owners are there.
+ 
+std::shared_ptr<int> calculateProduct(int a, int b)
+{
+    return std::make_shared<int>(a*b);
+}
 
 int main() {
-    std::shared_ptr<int> number = std::make_shared<int>(10);
-    // display the value under number pointer and use_count() of it
-    std::cout<<"*number: "<<*number<<'\n';
-    std::cout<<"number.use_count(): "<<number.use_count()<<'\n';
-    foo(number);
-    // display the value under number pointer and use_count() of it
-    std::cout<<"*number: "<<*number<<'\n';
-    std::cout<<"number.use_count(): "<<number.use_count()<<'\n';
+    auto number = calculateProduct(10, 20);
+    std::cout << "num: " << *number << " | owners: " << number.use_count() << "\n";
 
     return 0;
 }
