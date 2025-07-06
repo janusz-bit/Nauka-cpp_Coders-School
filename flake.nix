@@ -6,30 +6,35 @@
   };
 
   outputs =
-    { self, nixpkgs }:
+    {
+      self,
+      nixpkgs,
+      ...
+    }@inputs:
     let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      linux = "x86_64-linux";
+      pkgs = import nixpkgs {
+        system = linux;
+        config.allowUnfree = true;
+      };
     in
     {
-      devShells.${system}.default = pkgs.mkShell {
+      devShells.${linux}.default = pkgs.mkShell {
 
         name = "sdl-dev-shell";
         shellHook = ''
-          echo "Welcome to the SDL development environment!"
-          echo "You can start developing your SDL applications now."
-          export PS1="\[\e[91m\]nix develop:\[\e[0m\] $PS1"
+          echo "Welcome to the development environment!"
         '';
-        packages = with pkgs; [
-          # Build tools
+        buildInputs = with pkgs; [
           cmake
           pkg-config
           gcc
-          clang
+          clang-tools
           gnumake
           ninja
           sdl3
         ];
       };
+
     };
 }
