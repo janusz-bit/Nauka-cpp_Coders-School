@@ -1,20 +1,25 @@
 #include <iostream>
-#include <string>
+#include <list>
 #include <vector>
 
-// Implement printVector to print the content of a given vector on screen.
-// Each string in a new line.
+// Implement createSortedList
+// add proper include :)
+std::list<int> createSortedList(std::vector<int> vec) {
 
-void printVector(std::vector<std::string> vec) {
-  for (auto i : vec) {
-    std::cout << i << '\n';
+  std::list<int> list;
+  for (auto it : vec) {
+    list.push_back(it);
   }
+  list.sort();
+  return list;
 }
 
 int main() {
-  std::vector<std::string> vec{"Hello Coders School!",
-                               "Welcome to the best C++ course ever",
-                               "Man, this is crazy :)"};
-  printVector(vec);
+  std::vector<int> vec{2, 3, 4, 1, 6, 5, 8, 7, 9, 0};
+  auto list = createSortedList(vec);
+
+  for (const auto &el : list)
+    std::cout << el << " ";
+
   return 0;
 }
