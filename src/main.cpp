@@ -1,18 +1,20 @@
 #include <iostream>
-#include <memory>
+#include <string>
+#include <vector>
 
-// TODO: Implement calculateProduct()
-// It should take 2 int values and return their product as a shared_ptr.
-// Additionally, check how many owners are there.
- 
-std::shared_ptr<int> calculateProduct(int a, int b)
-{
-    return std::make_shared<int>(a*b);
+// Implement printVector to print the content of a given vector on screen.
+// Each string in a new line.
+
+void printVector(std::vector<std::string> vec) {
+  for (auto i : vec) {
+    std::cout << i << '\n';
+  }
 }
 
 int main() {
-    auto number = calculateProduct(10, 20);
-    std::cout << "num: " << *number << " | owners: " << number.use_count() << "\n";
-
-    return 0;
+  std::vector<std::string> vec{"Hello Coders School!",
+                               "Welcome to the best C++ course ever",
+                               "Man, this is crazy :)"};
+  printVector(vec);
+  return 0;
 }
