@@ -1,25 +1,30 @@
 #include <iostream>
 #include <list>
+#include <map>
+#include <string>
 #include <vector>
 
-// Implement createSortedList
-// add proper include :)
-std::list<int> createSortedList(std::vector<int> vec) {
+// Implement createMap. It should take a vector and list and
+// return a map of merge them as keys from the vector and values from the list
+std::map<int, std::string> createMap(std::vector<int> vec,
+                                     std::list<std::string> list) {
 
-  std::list<int> list;
-  for (auto it : vec) {
-    list.push_back(it);
+  std::map<int, std::string> map;
+  auto itList = list.begin();
+  for (auto itVec : vec) {
+    map[itVec] = *itList;
+    ++itList;
   }
-  list.sort();
-  return list;
+  return map;
 }
 
 int main() {
-  std::vector<int> vec{2, 3, 4, 1, 6, 5, 8, 7, 9, 0};
-  auto list = createSortedList(vec);
+  std::vector<int> vec{1, 2, 3, 4, 5};
+  std::list<std::string> list{"One", "Two", "Three", "Four", "Five"};
+  auto map = createMap(vec, list);
 
-  for (const auto &el : list)
-    std::cout << el << " ";
+  for (const auto &pair : map)
+    std::cout << pair.first << " | " << pair.second << '\n';
 
   return 0;
 }
