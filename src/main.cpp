@@ -1,31 +1,47 @@
-// Zadanie #2
-
-//     Znajdź dokumentację std::array<T, N> na cppreference.com
-//     Stwórz nowy plik i napisz funkcję main()
-//     Stwórz std::array przechowujący wartości całkowitoliczbowe o rozmiarze 10
-//     Wypełnij ją wartościami 5
-//     Do czwartego elementu przypisz wartość 3
-//     Stwórz inną tablicę o tym samym rozmiarze
-//     Podmień tablice
-//     Wypisz obie tablice, każdą w osobnej linii
+// Znajdź dokumentację std::list<T> na cppreference.com
+// Stwórz nowy plik i napisz funkcję main()
+// Stwórz listę zawierającą elementy od 0 do 5
+// Wyświetl listę
+// Usuń trzeci element z listy
+// Dodaj na początek i na koniec listy wartość 10
+// Wyświetl listę
+// Dodaj na czwartej pozycji liczbę 20
+// Przepisz listę do std::array<T, N>
+// Wyświetl <std::array<T, N>
 
 #include <array>
+#include <cstddef>
 #include <iostream>
-int main()
-{
-  std::array<int, 10> array;
-  array.fill(5);
-  array[3]=3;
-  std::array<int, 10> array2;
-  array.swap(array);
-  for (auto i : array) {
-    std::cout<<i<<", ";
-  
+#include <iterator>
+#include <list>
+
+int main() {
+  std::list<int> list{0, 1, 2, 3, 4, 5};
+
+  for (auto it : list) {
+    std::cout << it<<", ";
   }
   std::cout<<"\n";
-  for (auto i : array2) {
-    std::cout<<i<<", ";
-  
+
+  auto it = list.begin();
+  std::advance(it,2);
+  std::cout<<*(list.erase(it))<<"\n";
+  list.emplace_front(10);
+  list.emplace_back(10);
+  it = list.begin();
+  std::advance(it,4);
+  list.insert(it,20);
+  std::array<int, 8> array;
+
+
+  auto itt = list.begin();
+  for (size_t i{}; i<list.size(); ++i) {
+    array.at(i)=*itt;
+    std::advance(itt,1);
+  }
+
+  for (auto it : array) {
+    std::cout << it<<", ";
   }
   std::cout<<"\n";
 }
