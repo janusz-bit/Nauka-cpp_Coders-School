@@ -1,30 +1,31 @@
+// Zadanie #1
+
+//     Otwórz dokumentację wektora na cppreference.com
+//     Stwórz nowy plik i napisz funkcję main()
+//     Stwórz wektor o wartościach {1, 2, 4, 5, 6}
+//     Usuń pierwszą wartość
+//     dodaj wartość 5 na końcu wektora
+//     dodaj wartość 12 na początku wektora korzystając z metody emplace()
+//     Wypisz rozmiar wektora i maksymalny możliwy rozmiar
+//     Wypisz zawartość wektora
+//     Wyczyść wektor
+//     Wypisz rozmiar wektora
+
 #include <iostream>
-#include <list>
-#include <map>
-#include <string>
 #include <vector>
 
-// Implement createMap. It should take a vector and list and
-// return a map of merge them as keys from the vector and values from the list
-std::map<int, std::string> createMap(std::vector<int> vec,
-                                     std::list<std::string> list) {
-
-  std::map<int, std::string> map;
-  auto itList = list.begin();
-  for (auto itVec : vec) {
-    map[itVec] = *itList;
-    ++itList;
-  }
-  return map;
-}
-
 int main() {
-  std::vector<int> vec{1, 2, 3, 4, 5};
-  std::list<std::string> list{"One", "Two", "Three", "Four", "Five"};
-  auto map = createMap(vec, list);
+  std::vector<int> vec{1, 2, 4, 5, 6};
+  vec.erase(vec.begin());
+  vec.push_back(5);
+  vec.emplace(vec.begin(), 12);
+  std::cout << "vec.size(): " << vec.size() << '\n';
+  std::cout << "vec.max_size(): " << vec.max_size() << '\n';
+  for (auto i : vec) {
+    std::cout<<i<<", ";
+  }
+  std::cout<<'\n';
 
-  for (const auto &pair : map)
-    std::cout << pair.first << " | " << pair.second << '\n';
-
-  return 0;
+  vec.clear();
+  std::cout << "vec.size(): " << vec.size() << '\n';
 }
