@@ -1,47 +1,48 @@
-// Znajdź dokumentację std::list<T> na cppreference.com
-// Stwórz nowy plik i napisz funkcję main()
-// Stwórz listę zawierającą elementy od 0 do 5
+
+// Znajdź dokumentację std::forward_list na cppreference.com
+// Skorzystaj z kodu z zadania std::list
+// Stwórz listę jednokierunkową zawierającą elementy od 0 do 6
 // Wyświetl listę
 // Usuń trzeci element z listy
 // Dodaj na początek i na koniec listy wartość 10
 // Wyświetl listę
 // Dodaj na czwartej pozycji liczbę 20
-// Przepisz listę do std::array<T, N>
-// Wyświetl <std::array<T, N>
+// Wyświetl listę
 
-#include <array>
-#include <cstddef>
+#include <forward_list>
 #include <iostream>
 #include <iterator>
-#include <list>
-
 int main() {
-  std::list<int> list{0, 1, 2, 3, 4, 5};
+  std::forward_list<int> flist{0, 1, 2, 3, 4, 5, 6};
+  for (auto it : flist) {
+    std::cout << it<<", ";
+  }
+  std::cout<<'\n';
+  auto it = flist.begin();
+  std::advance(it,1);
+  flist.erase_after(it);
+  flist.push_front(10);
 
-  for (auto it : list) {
+  it = flist.begin();
+  auto itNext = it;
+  ++itNext;
+  while (itNext != flist.end()) {
+    ++it;
+    ++itNext;
+  }
+  flist.emplace_after(it, 10);
+  
+  
+  for (auto it : flist) {
     std::cout << it<<", ";
   }
   std::cout<<"\n";
 
-  auto it = list.begin();
+  it = flist.begin();
   std::advance(it,2);
-  std::cout<<*(list.erase(it))<<"\n";
-  list.emplace_front(10);
-  list.emplace_back(10);
-  it = list.begin();
-  std::advance(it,4);
-  list.insert(it,20);
-  std::array<int, 8> array;
-
-
-  auto itt = list.begin();
-  for (size_t i{}; i<list.size(); ++i) {
-    array.at(i)=*itt;
-    std::advance(itt,1);
-  }
-
-  for (auto it : array) {
+  flist.insert_after(it,20);
+  for (auto it : flist) {
     std::cout << it<<", ";
   }
-  std::cout<<"\n";
+  
 }
