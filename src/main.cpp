@@ -1,35 +1,46 @@
+// ## Zadanie 1 - `remove-Vowels`
 
-// Znajdź dokumentację std:deque na cppreference.com
-// Stwórz nowy plik i napisz funkcję main()
-// Stwórz pusty deque
-// Dodaj do niego pięć dowolnych wartości
-// Wyświetl deque
-// Usuń drugi i czwarty element
-// Dodaj na początek i koniec wartość 30
-// Wyświetl deque
-// Dodaj na czwartej pozycji liczbę 20
-// Wyświetl deque
+// Napisz funkcję `removeVowels()`, która przyjmie `std::vector<std::string>`
+// oraz usunie wszystkie samogłoski z tych wyrażeń.
 
-#include <deque>
+// * Input: `{"abcde", "aabbbccabc", "qwerty"}`
+// * Output: `{"bcd", "bbccbc", "qwrt"}`
+
+#include <algorithm>
+#include <array>
 #include <iostream>
+#include <string>
+#include <vector>
+
+std::vector<std::string> &removeVowels(std::vector<std::string> &input) {
+  constexpr std::array<char, 6> Vowels{
+      'e', 'y', 'u', 'i', 'o', 'a',
+  };
+  for (auto &String : input) {
+
+      for (auto itVowels = Vowels.begin(); itVowels != Vowels.end();
+           ++itVowels) {
+
+          String.erase(std::remove(String.begin(), String.end(), *itVowels),String.end());
+
+        }
+    }
+    return input;
+  }
+
+
+void print(const std::vector<std::string>& input)
+{
+  std::cout<<"{";
+  for (const auto& it : input) {
+    std::cout<<"\""<<it<<"\", ";
+  }
+  std::cout<<"}\n";
+}
+
 int main() {
-  std::deque<int> deque;
-  deque = {1,2,3,4,5};
-  for (auto it : deque) {
-    std::cout<<it<<", ";
-  }
-  std::cout<<'\n';
-  deque.erase(deque.begin()+1);
-  deque.erase(deque.begin()+2);
-  deque.insert(deque.begin(),30);
-  deque.insert(deque.end(),30);
-  for (auto it : deque) {
-    std::cout<<it<<", ";
-  }
-  std::cout<<'\n';
-  deque.insert(deque.begin()+3,20);
-  for (auto it : deque) {
-    std::cout<<it<<", ";
-  }
-  std::cout<<'\n';
+  std::vector<std::string> input{"abcde", "aabbbccabc", "qwerty"};
+  print(input);
+  removeVowels(input);
+  print(input);
 }
