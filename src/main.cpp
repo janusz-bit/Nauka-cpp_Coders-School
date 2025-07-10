@@ -18,24 +18,27 @@ std::vector<std::string> &removeVowels(std::vector<std::string> &input) {
   };
   for (auto &String : input) {
 
-      for (auto itVowels = Vowels.begin(); itVowels != Vowels.end();
-           ++itVowels) {
+    for (auto itVowels = Vowels.begin(); itVowels != Vowels.end(); ++itVowels) {
 
-          String.erase(std::remove(String.begin(), String.end(), *itVowels),String.end());
-
-        }
+      String.erase(std::remove(String.begin(), String.end(), *itVowels),
+                   String.end());
     }
-    return input;
   }
+  return input;
+}
 
-
-void print(const std::vector<std::string>& input)
-{
-  std::cout<<"{";
-  for (const auto& it : input) {
-    std::cout<<"\""<<it<<"\", ";
+void print(const std::vector<std::string> &input) {
+  std::cout << "{";
+  bool isFirst = true;
+  for (const auto &it : input) {
+    if (isFirst) {
+      isFirst = false;
+    } else {
+      std::cout << ", ";
+    }
+    std::cout << "\"" << it << "\"";
   }
-  std::cout<<"}\n";
+  std::cout << "}\n";
 }
 
 int main() {
