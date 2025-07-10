@@ -1,49 +1,57 @@
-// ## Zadanie 1 - `remove-Vowels`
+// ## Zadanie 2 - `length-sort`
 
-// Napisz funkcję `removeVowels()`, która przyjmie `std::vector<std::string>`
-// oraz usunie wszystkie samogłoski z tych wyrażeń.
+// Napisz funkcję `lengthSort()`.
 
-// * Input: `{"abcde", "aabbbccabc", "qwerty"}`
-// * Output: `{"bcd", "bbccbc", "qwrt"}`
+// Ma ona przyjąć `std::forward_list<std::string>` i zwrócić
+// `std::deque<std::string>` z posortowanymi słowami od najkrótszego do
+// najdłuższego. Jeżeli dwa lub więcej słów ma tyle samo znaków posortuj je
+// leksykograficznie.
+
+// * Input: `std::forward_list<std::string>{"Three", "One", "Four", "Two"}`
+// * Output: `std::deque<std::string>{"One", "Two", "Four", "Three"}`
 
 #include <algorithm>
-#include <array>
+#include <deque>
+#include <forward_list>
+#include <functional>
 #include <iostream>
 #include <string>
-#include <vector>
 
-std::vector<std::string> &removeVowels(std::vector<std::string> &input) {
-  constexpr std::array<char, 6> Vowels{
-      'e', 'y', 'u', 'i', 'o', 'a',
-  };
-  for (auto &String : input) {
-
-    for (auto itVowels = Vowels.begin(); itVowels != Vowels.end(); ++itVowels) {
-
-      String.erase(std::remove(String.begin(), String.end(), *itVowels),
-                   String.end());
-    }
+std::deque<std::string>
+lengthSort(const std::forward_list<std::string> &input) {
+  std::deque<std::string> output;
+  for (const auto& String: input) {
+    output.push_back(String);
   }
-  return input;
+  std::sort(output.begin(),output.end(),[](std::string a, std::string b){
+    if (a.length() == b.length()) {
+      return std::less<std::string>{}(a,b);
+    }
+    else 
+    {
+      return a.length()<b.length();
+    }
+  });
+  return output;
 }
 
-void print(const std::vector<std::string> &input) {
-  std::cout << "{";
+int main()
+{
+  std::forward_list<std::string> input{"Three", "One", "Four", "Two"};
+  std::deque<std::string> output = lengthSort(input);
+
+  std::cout<<"{";
   bool isFirst = true;
-  for (const auto &it : input) {
-    if (isFirst) {
+  for (auto i : output) {
+    
+    if(isFirst)
+    {
       isFirst = false;
-    } else {
-      std::cout << ", ";
     }
-    std::cout << "\"" << it << "\"";
+    else {
+      std::cout<<", ";
+    }
+    std::cout<<"\""<<i<<"\"";
   }
-  std::cout << "}\n";
-}
-
-int main() {
-  std::vector<std::string> input{"abcde", "aabbbccabc", "qwerty"};
-  print(input);
-  removeVowels(input);
-  print(input);
+  std::cout<<"}\n";
 }
