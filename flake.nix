@@ -33,6 +33,7 @@
           gnumake
           ninja
           sdl3
+          gdb
         ];
       };
 
