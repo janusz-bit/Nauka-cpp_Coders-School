@@ -1,60 +1,64 @@
 
-// Utwórz std::vector<int> v = {8, 2, 5, 3, 4, 4, 2, 7, 6, 6, 1, 8, 9}; (ten sam
-// co ostatnio) Znajdź wszystkie elementy większe od 6 i wypisz je Znajdź
-// wszystkie elementy równe 2, 4, 6 lub 8 i wypisz je Przeszukaj wektor v w
-// poszukiwaniu zakresów {6, 6} i {7, 7} Użyj std::adjacent_find na wektorze v
+
+// Utwórz poniższy wektor:
+
+//  std::vector<std::pair<int, std::string>> v {
+//      {0, "Zero"}, {1, "One"}, {2, "Two"}, {3, "Three"}, {4, "Four"}, {5,
+//      "Five"}
+//  };
+
+// Utwórz wektor intów v2 i wypełnij go wszystkimi intami (pierwszymi elementami
+// pary) z wektora v Utwórz wektor stringów v3 i wypełnij go konkatenacją string
+// + dwukropek + int ze wszystkich par z wektora v Utwórz wektor charów v4 i
+// wypełnij go co drugą literą alfabetu
 
 #include <algorithm>
 #include <iostream>
+#include <iterator>
+#include <string>
+#include <utility>
 #include <vector>
+
 int main() {
-  std::vector<int> v = {8, 2, 5, 3, 4, 4, 2, 7, 6, 6, 1, 8, 9};
+  std::vector<std::pair<int, std::string>> v={{0, "Zero"}, {1, "One"},
+                                             {2, "Two"},  {3, "Three"},
+                                             {4, "Four"}, {5, "Five"}};
+  std::vector<int> v2;
+  std::transform(v.begin(), v.end(), std::back_inserter(v2),
+                 [](auto i) { return i.first; });
 
-  auto begin = v.begin();
-  while (1) {
-    begin = std::find_if(begin, v.end(), [](int i) {
-      if (i > 6) {
-        return true;
-      }
-      return false;
-    });
-    if (begin == v.end()) {
-      break;
-    } else {
-      std::cout << *begin << '\n';
-      begin++;
-    }
+  std::ranges::for_each(v2, [](auto i) { std::cout << i << '\n'; });
+
+
+  std::vector<std::string> v3;
+  for (auto it : v) {
+    v3.push_back(std::to_string(it.first)+ ": " + it.second);
   }
+  std::ranges::for_each(v3,[](auto i){
+    std::cout<<i<<'\n';
+  });
 
-  std::cout << "---\n";
 
-  std::vector<int> Find = {2, 4, 6, 8};
+  const int numbers = 'z'-'a';
+  std::vector<std::string> v4((numbers+1)/2);
 
-  auto begin1 = v.begin();
-  while (1) {
-    begin1 = std::find_first_of(begin1, v.end(), Find.begin(), Find.end());
-    if (begin1 == v.end()) {
-      break;
-    }
-    std::cout << *begin1 << '\n';
-    begin1++;
-  }
-  std::cout << "---\n";
+  
 
-  std::vector<std::vector<int>> search = {{6, 6}, {7, 7}};
+  std::generate_n(v4.begin(),(numbers+1)/2,[a{'a'-1}]() mutable {
+    a+=2;
+    return a;
+  });
 
-  for (auto it : search) {
+  
+  
 
-    auto begin2 = v.begin();
-    while (1) {
-      begin2 = std::search(begin2, v.end(), it.begin(), it.end());
-      if (begin2 == v.end()) {
-        break;
-      }
-      std::cout << begin2 - v.begin() << '\n';
-      begin2++;
-    }
-  }
+  std::ranges::for_each(v4,[](auto i){
+    std::cout<<i<<'\n';
+  });
+
+
+
+
 
   return 0;
 }
