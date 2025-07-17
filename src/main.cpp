@@ -1,28 +1,67 @@
 // Zadanie 💻
 
-//     Utwórz std::vector<int> v = {8, 2, 5, 3, 4, 4, 2, 7, 6, 6, 1, 8, 9};
-//     Usuń wszystkie duplikaty z v
-//     Wypisz wszystkie elementy, używając std::copy i std::ostream_iterator
-//     Pomieszaj losowo wszystkie elementy
-//     Wypisz je raz jeszcze
+// struct Point { int x, y; }
+
+//     Utwórz std::deque<Point> d = {{1, 3}, {0, 0}, {1, 2}, {2, 4}, {4, 1}, {0,
+//     2}, {2, 2}}; Utwórz funkcję do wypisywania zawartości kontenera d Napisz
+//     2 komparatory:
+//         pointXCompare, który porównuje tylko wartości x ze struktury Point
+//         pointYCompare, który porównuje tylko wartości y ze struktury Point
+//     Sprawdź czy d jest posortowane względem pointXCompare oraz pointYCompare
+//     Użyj stable_sort do posortowania d względem wartości x
+//     Użyj sort do posortowania d względem wartości y
 
 #include <algorithm>
+#include <deque>
 #include <iostream>
-#include <iterator>
-#include <vector>
 
-void printVector(const std::vector<int> &v) {
-  std::ranges::for_each(v, [](auto i) { std::cout << i << "; "; });
-  std::cout << '\n';
+struct Point {
+  int x, y;
+};
+
+void printDeque(std::deque<Point> input) {
+  std::for_each(input.begin(), input.end(), [](auto i) {
+    std::cout << "{" << i.x << "; " << i.y << "}\n";
+  });
 }
 
 int main() {
-  std::vector<int> v = {8, 2, 5, 3, 4, 4, 2, 7, 6, 6, 1, 8, 9};
-  printVector(v);
-  std::ranges::sort(v);
-  auto it = std::unique(v.begin(),v.end());
-  v.erase(it,v.end());
-  
-  std::copy(v.begin(),v.end(),std::ostream_iterator<int>(std::cout,"; "));
+  std::deque<Point> d = {{1, 3}, {0, 0}, {1, 2}, {2, 4},
+                         {4, 1}, {0, 2}, {2, 2}};
+  printDeque(d);
+  auto pointXCompare = [](Point input1, Point input2) {
+    return input1.x < input2.x;
+  };
+  auto pointYCompare = [](Point input1, Point input2) {
+    return input1.y < input2.y;
+  };
+
+  if (std::is_sorted(d.begin(), d.end(), pointXCompare)) {
+    std::cout << "Posortowane \"pointXCompare\"\n";
+  } else {
+    std::cout << "Nie posortowane \"pointXCompare\"\n";
+  }
+
+  if (std::is_sorted(d.begin(), d.end(), pointYCompare)) {
+    std::cout << "Posortowane \"pointYCompare\"\n";
+  } else {
+    std::cout << "Nie posortowane \"pointYCompare\"\n";
+  }
+
+  std::stable_sort(d.begin(),d.end(),pointXCompare);
+  printDeque(d);
+  if (std::is_sorted(d.begin(), d.end(), pointXCompare)) {
+    std::cout << "Posortowane \"pointXCompare\"\n";
+  } else {
+    std::cout << "Nie posortowane \"pointXCompare\"\n";
+  }
+
+  std::sort(d.begin(),d.end(),pointYCompare);
+  printDeque(d);
+  if (std::is_sorted(d.begin(), d.end(), pointYCompare)) {
+    std::cout << "Posortowane \"pointYCompare\"\n";
+  } else {
+    std::cout << "Nie posortowane \"pointYCompare\"\n";
+  }
 
 }
