@@ -1,67 +1,55 @@
 // Zadanie 💻
-
-// struct Point { int x, y; }
-
-//     Utwórz std::deque<Point> d = {{1, 3}, {0, 0}, {1, 2}, {2, 4}, {4, 1}, {0,
-//     2}, {2, 2}}; Utwórz funkcję do wypisywania zawartości kontenera d Napisz
-//     2 komparatory:
-//         pointXCompare, który porównuje tylko wartości x ze struktury Point
-//         pointYCompare, który porównuje tylko wartości y ze struktury Point
-//     Sprawdź czy d jest posortowane względem pointXCompare oraz pointYCompare
-//     Użyj stable_sort do posortowania d względem wartości x
-//     Użyj sort do posortowania d względem wartości y
+// Utwórz wektor v1 z liczbami od 1 do 1000
+// Oblicz sumę tych liczb
+// Utwórz wektor v2 z 1000 elementów powtarzających się w następującej
+// sekwencji: -1, 0, 1, 0, -1, 0, 1, 0, ...
+// Oblicz iloczyn skalarny wektorów v1
+// i v2
+// Oblicz sumę tych liczb z v1, które są na pozycjach dodatnich jedynek z
+// wektora v2
 
 #include <algorithm>
-#include <deque>
+#include <functional>
 #include <iostream>
-
-struct Point {
-  int x, y;
-};
-
-void printDeque(std::deque<Point> input) {
-  std::for_each(input.begin(), input.end(), [](auto i) {
-    std::cout << "{" << i.x << "; " << i.y << "}\n";
-  });
-}
-
+#include <iterator>
+#include <numeric>
+#include <vector>
 int main() {
-  std::deque<Point> d = {{1, 3}, {0, 0}, {1, 2}, {2, 4},
-                         {4, 1}, {0, 2}, {2, 2}};
-  printDeque(d);
-  auto pointXCompare = [](Point input1, Point input2) {
-    return input1.x < input2.x;
-  };
-  auto pointYCompare = [](Point input1, Point input2) {
-    return input1.y < input2.y;
-  };
+  std::vector<int> v1(1000);
+  std::iota(v1.begin(), v1.end(), 1);
+  std::copy(v1.begin(), v1.end(), std::ostream_iterator<int>(std::cout, "; "));
+  std::cout << '\n';
+  std::cout << '\n';
+  std::cout << std::reduce(v1.begin(), v1.end());
+  std::cout << '\n';
+  std::cout << '\n';
 
-  if (std::is_sorted(d.begin(), d.end(), pointXCompare)) {
-    std::cout << "Posortowane \"pointXCompare\"\n";
-  } else {
-    std::cout << "Nie posortowane \"pointXCompare\"\n";
-  }
+  std::vector<int> v2(1000);
+  std::generate(v2.begin(), v2.end(), [i = 0, goingDistance = -1]() mutable {
+    if (goingDistance == 1 && i == 1) {
+      goingDistance = -1;
+    } else if (goingDistance == -1 && i == -1) {
+      goingDistance = 1;
+    }
+    i += goingDistance;
+    return i;
+  });
+  std::copy(v2.begin(), v2.end(), std::ostream_iterator<int>(std::cout, "; "));
+  std::cout << '\n';
+  std::cout << '\n';
 
-  if (std::is_sorted(d.begin(), d.end(), pointYCompare)) {
-    std::cout << "Posortowane \"pointYCompare\"\n";
-  } else {
-    std::cout << "Nie posortowane \"pointYCompare\"\n";
-  }
+  std::cout << std::inner_product(v1.begin(), v1.end(), v2.begin(), 0);
+  std::cout << '\n';
+  std::cout << '\n';
 
-  std::stable_sort(d.begin(),d.end(),pointXCompare);
-  printDeque(d);
-  if (std::is_sorted(d.begin(), d.end(), pointXCompare)) {
-    std::cout << "Posortowane \"pointXCompare\"\n";
-  } else {
-    std::cout << "Nie posortowane \"pointXCompare\"\n";
-  }
-
-  std::sort(d.begin(),d.end(),pointYCompare);
-  printDeque(d);
-  if (std::is_sorted(d.begin(), d.end(), pointYCompare)) {
-    std::cout << "Posortowane \"pointYCompare\"\n";
-  } else {
-    std::cout << "Nie posortowane \"pointYCompare\"\n";
-  }
-
+  std::cout << std::inner_product(v1.begin(), v1.end(), v2.begin(), 0,
+                                  std::plus<int>(), [](auto i1, auto i2) {
+                                    if (i2 == 1) {
+                                      return i1;
+                                    } else {
+                                      return 0;
+                                    }
+                                  });
+  std::cout << '\n';
+  std::cout << '\n';
 }
