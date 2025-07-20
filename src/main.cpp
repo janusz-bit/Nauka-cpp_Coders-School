@@ -6,11 +6,16 @@
 #include <ranges>
 #include <set>
 
-template <typename Container>
-void print(const Container &container, int newLine = 1) {
-  std::copy(
+template <typename Container, typename Type>
+void print(
+    const Container &container, const int &newLine = 1,
+    bool (*ptr)(Type i) = [](Type) { return true; }) {
+  std::cout << '{';
+  std::copy_if(
       container.begin(), container.end(),
-      std::ostream_iterator<typename Container::value_type>(std::cout, "; "));
+      std::ostream_iterator<typename Container::value_type>(std::cout, "; "),
+      ptr);
+  std::cout << '}';
   if (newLine) {
     for (size_t i{}; i < newLine; ++i) {
       std::cout << '\n';
@@ -28,7 +33,7 @@ int main() {
 
   myMap.insert({-10, 0, 10, 100, -100});
 
-  print(myMap, 2);
+  print<std::set<int, std::greater<int>>, int>(myMap);
 
   auto number2 = std::views::iota(0, 40);
 
@@ -38,7 +43,7 @@ int main() {
   }
   myMultiMap.insert({-10, 0, 10, 100, -100});
 
-  print(myMultiMap, 2);
+  print<std::multiset<int>, int>(myMultiMap);
 
   std::multiset<int> endContainer;
 
@@ -50,11 +55,12 @@ int main() {
     endContainer.insert(it);
   }
 
-  print(endContainer,2);
+  print<std::multiset<int>, int>(endContainer);
 
-  for (auto it : endContainer) {
-    if (it == 0 || it ==50) {
-      std::cout<<it<<"; ";
+  print<std::multiset<int>, int>(endContainer, 1, [](auto i) {
+    if (i == 0 || i == 50) {
+      return true;
     }
-  }
+    return false;
+  });
 }
