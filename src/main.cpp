@@ -1,55 +1,88 @@
-// Zadanie 💻
-// Utwórz wektor v1 z liczbami od 1 do 1000
-// Oblicz sumę tych liczb
-// Utwórz wektor v2 z 1000 elementów powtarzających się w następującej
-// sekwencji: -1, 0, 1, 0, -1, 0, 1, 0, ...
-// Oblicz iloczyn skalarny wektorów v1
-// i v2
-// Oblicz sumę tych liczb z v1, które są na pozycjach dodatnich jedynek z
-// wektora v2
+// Zadanie
+// struct Point {
+//   int x;
+//   int y;
+// }
+// Struktura Point ma reprezentować punkt o współrzędnych x i y na mapie. Mamy
+// też dane 4 miast:
 
-#include <algorithm>
-#include <functional>
+// Wrocław (x = 17, y = 51)
+// Moskwa (x = 37, y = 55)
+// Nowy Jork (x = -74, y = 40)
+// Sydney (x = 151, y = -33)
+// Część A - łatwiejsza
+// Stwórz std::map<std::string, Point>, która będzie przechowywać powyższe
+// miejsca Sprawdź czy w mapie jest element, który znajduje się w promieniu 70
+// od środka układu współrzędnych (0, 0) Pobierz i wypisz współrzędne Sydney
+// Zadanie
+// struct Point {
+//   int x;
+//   int y;
+// }
+// Struktura Point ma reprezentować punkt o współrzędnych x i y na mapie. Mamy
+// też dane 4 miast:
+
+// Wrocław (x = 17, y = 51)
+// Moskwa (x = 37, y = 55)
+// Nowy Jork (x = -74, y = 40)
+// Sydney (x = 151, y = -33)
+// Część B - trudniejsza
+// Skopiuj te dane do mapy std::map<Point, std::string>
+// Sprawdź czy w odwróconej mapie jest element, który znajduje się w promieniu
+// 70 od środka układu współrzędnych (0, 0) Pobierz i wypisz współrzędne Sydney
+
+#include <cmath>
 #include <iostream>
-#include <iterator>
-#include <numeric>
-#include <vector>
+#include <map>
+#include <ostream>
+#include <string>
+
+struct Point;
+
+float PointDistance(Point point1);
+
+struct Point {
+  int x;
+  int y;
+
+  bool operator<(const Point &input) const {
+    return PointDistance(*this) < PointDistance(input);
+  }
+};
+
+std::ostream& operator<<(std::ostream& stream, const Point& point)
+{
+  stream<<"{"<<point.x<<"; "<<point.y<<"}";
+  return stream;
+}
+
+float PointDistance(Point point1) {
+  const int x = point1.x;
+  const int y = point1.y;
+  return std::sqrt(x * x + y * y);
+}
+
 int main() {
-  std::vector<int> v1(1000);
-  std::iota(v1.begin(), v1.end(), 1);
-  std::copy(v1.begin(), v1.end(), std::ostream_iterator<int>(std::cout, "; "));
-  std::cout << '\n';
-  std::cout << '\n';
-  std::cout << std::reduce(v1.begin(), v1.end());
-  std::cout << '\n';
-  std::cout << '\n';
 
-  std::vector<int> v2(1000);
-  std::generate(v2.begin(), v2.end(), [i = 0, goingDistance = -1]() mutable {
-    if (goingDistance == 1 && i == 1) {
-      goingDistance = -1;
-    } else if (goingDistance == -1 && i == -1) {
-      goingDistance = 1;
+  std::map<std::string, Point> myMap = {{"Wrocław", {17, 51}},
+                                        {"Moskwa", {37, 55}},
+                                        {"Nowy Jork", {-74, 40}},
+                                        {"Sydney", {151, -33}}};
+  for (auto myPoint : myMap) {
+    if (((myPoint.second.x * myPoint.second.x) +
+         (myPoint.second.y * myPoint.second.y)) < (70 * 70)) {
+      std::cout << myPoint.first << '\n';
     }
-    i += goingDistance;
-    return i;
-  });
-  std::copy(v2.begin(), v2.end(), std::ostream_iterator<int>(std::cout, "; "));
-  std::cout << '\n';
-  std::cout << '\n';
+  }
 
-  std::cout << std::inner_product(v1.begin(), v1.end(), v2.begin(), 0);
-  std::cout << '\n';
-  std::cout << '\n';
+  std::map<Point, std::string> myMap2({{{17, 51}, "Wrocław"},
+                                       {{37, 55}, "Moskwa"},
+                                       {{-74, 40}, "Nowy Jork"},
+                                       {{151, -33}, "Sydney"}});
 
-  std::cout << std::inner_product(v1.begin(), v1.end(), v2.begin(), 0,
-                                  std::plus<int>(), [](auto i1, auto i2) {
-                                    if (i2 == 1) {
-                                      return i1;
-                                    } else {
-                                      return 0;
-                                    }
-                                  });
-  std::cout << '\n';
-  std::cout << '\n';
+
+  for (auto it = myMap2.begin(); PointDistance(it->first) < 70 && it != myMap2.end(); ++it) {
+    std::cout<<it->second<<": "<<it->first<<'\n';
+  }
+
 }
