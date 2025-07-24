@@ -25,7 +25,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 
 # No shared libraries
 # This is to ensure that we only build static libraries.
-option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
+# option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 
 add_executable(MarkdownReader src/main.cpp)
 set_target_properties(MarkdownReader PROPERTIES
